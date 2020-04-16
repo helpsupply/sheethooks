@@ -18,8 +18,8 @@ async function getSheetValues(client, id, sheetNames) {
 	})).data.valueRanges;
 
 	let out = {};
-	ranges.map((r) => {
-		out[r.range.split("!")[0]] = r.values;
+	ranges.map((r, i) => {
+		out[sheetNames[i]] = r.values;
 		return null;
 	});
 
@@ -153,7 +153,9 @@ exports.describe = functions.https.onRequest(async (request, response) => {
 
   let schema = {};
   sheetNames.map((s) => {
-    schema[s] = values[s][0];
+    if (values[s] !== undefined) {
+      schema[s] = values[s][0];
+    }
     return null;
   });
 
